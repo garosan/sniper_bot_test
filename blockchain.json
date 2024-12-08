@@ -1,5 +1,8 @@
 {
+  "WETHAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   "factoryAddress": "0xF62c03E08ada871A0bEb309762E260a7a6a880E6",
+  "erc20Bytecode": "",
+  "erc20Abi": "",
   "factoryAbi": [
     {
       "anonymous": false,
