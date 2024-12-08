@@ -2,6 +2,7 @@ const fs = require("fs");
 const { WebSocketProvider, Contract } = require("ethers");
 require("dotenv").config();
 const blockchain = require("./blockchain.json");
+const { runInContext } = require("vm");
 
 const provider = new WebSocketProvider(process.env.LOCAL_RPC_URL_WS);
 const wallet = Wallet.fromPhrase(process.env.FOUNDRY_MNEMONIC, provider);
@@ -57,6 +58,25 @@ const snipe = async () => {
 
     // For this example, we buy 0.1 ETH of new token
     const amountIn = parseEther("0.1");
+    const amounts = await router.getAmountsOut(amountIn, [tokenIn, tokenOut]);
+    // Let's define our price tolerance
+    const amountOutMin = amounts[1] - (amount[1] * 5n) / 100n;
+    console.log(`
+      Buying new token
+      ================
+      tokenIn: ${amountIn.toString()} ${tokenIn} (WETH)
+      tokenOut: ${amountOutMin.toString()} ${tokenOut}
+      `);
+    const tx = await router.swapExactTokensForTokens(
+      amountIn,
+      amountOutMin,
+      [tokenIn, tokenOut],
+      blockchain.recipient,
+      Date.now() + 1000 * +60 * 10
+    );
+
+    const receipt = await tx.wait();
+    console.log("Transaction receipt: ", receipt);
   }
 };
 
