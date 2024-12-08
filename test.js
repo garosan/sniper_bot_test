@@ -8,7 +8,7 @@ const {
 require("dotenv").config();
 const blockchain = require("./blockchain.json");
 
-const provider = new WebSocketProvider(process.env.LOCAL_RPC_URL_WS);
+const provider = new WebSocketProvider(process.env.LOCAL_RPC_URL_HTTP);
 const wallet = Wallet.fromPhrase(process.env.FOUNDRY_MNEMONIC, provider);
 const erc20Deployer = new ContractFactory(
   blockchain.erc20Abi,
